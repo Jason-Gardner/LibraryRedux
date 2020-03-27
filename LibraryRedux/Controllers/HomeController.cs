@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using LibraryRedux.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LibraryRedux.Controllers
 {
@@ -19,9 +20,55 @@ namespace LibraryRedux.Controllers
             _logger = logger;
         }
 
+        [Authorize]
         public IActionResult Index()
         {
             UpdateLibrary(Library);
+            return View();
+        }
+
+        [Authorize]
+        public IActionResult Menu(string menu)
+        {
+            if (menu == "search")
+            {
+                return View("Search");
+            }
+            else
+            {
+                return View("Return");
+            }
+        }
+
+        [Authorize]
+        public IActionResult Search()
+        {
+            return View();
+        }
+
+        public IActionResult SearchLibrary(string search)
+        {
+            List<Book> searchList = new List<Book>();
+            LibraryDBContext db = new LibraryDBContext();
+            foreach (Book book in db.Book)
+            {
+                if (book.Title.ToLower().Contains(search) | book.Author.ToLower().Contains(search.Trim().ToLower()))
+                {
+                    searchList.Add(book);
+                }
+            }
+
+            return View("Search", searchList);
+        }
+
+        public IActionResult CheckOut(Book book)
+        {
+            return View(book);
+        }
+
+        [Authorize]
+        public IActionResult Return()
+        {
             return View();
         }
 

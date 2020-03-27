@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewData["Title"] = "Search";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model List<Book>
+
+<h1>Search</h1>
+
+<form asp-action="SearchLibrary" asp-controller="Home">
+    <input type="text" name="search" placeholder="Enter title or author here" />
+    <button type="submit">Search</button>
+</form>
+
+@{
+    if (Model != null)
+    {
+        <h3>Search Results</h3>
+        <table>
+            @foreach (Book book in @Model)
+            {
+                <tr>
+                    <td>@book.Title</td>
+                    <td>@book.Author</td>
+                    @if (book.Available == 0)
+                    {
+                        <td><b>Not available</b></td>
+                    }else
+                    {
+                        <td><i>@book.Available Available</i></td>
+                        <td><button class="badge-info" asp-action="CheckOut" asp-controller="Home" name="book as @book">Check Out</button> </td>
+                    }
+                </tr>
+            }
+        </table>
+    }
+}
+

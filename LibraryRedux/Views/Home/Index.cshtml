@@ -3,6 +3,15 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Welcome to the Bibliotecha</h1>
+    <p>
+        Please select what you would like to do today:
+    </p>
+    <form asp-action="Menu" asp-controller="Home">
+        <select name="menu">
+            <option value="search">Search for a book</option>
+            <option value="return">Return a book</option>
+        </select>
+        <button type="submit">Enter the Library</button>
+    </form>
 </div>
