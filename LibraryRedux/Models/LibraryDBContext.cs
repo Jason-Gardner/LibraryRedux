@@ -23,6 +23,7 @@ namespace LibraryRedux.Models
         public virtual DbSet<AspNetUserTokens> AspNetUserTokens { get; set; }
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
         public virtual DbSet<Book> Book { get; set; }
+        public virtual DbSet<Transaction> Transaction { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -160,6 +161,39 @@ namespace LibraryRedux.Models
                     .IsRequired()
                     .HasColumnName("type")
                     .HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<Transaction>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Booktitle).HasColumnName("booktitle");
+
+                entity.Property(e => e.Duedate)
+                    .HasColumnName("duedate")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Renew)
+                    .IsRequired()
+                    .HasColumnName("renew")
+                    .HasMaxLength(10);
+
+                entity.Property(e => e.Userid)
+                    .IsRequired()
+                    .HasColumnName("userid")
+                    .HasMaxLength(450);
+
+                entity.HasOne(d => d.BooktitleNavigation)
+                    .WithMany(p => p.Transaction)
+                    .HasForeignKey(d => d.Booktitle)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Transaction_Book");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Transaction)
+                    .HasForeignKey(d => d.Userid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Transaction_AspNetUsers");
             });
 
             OnModelCreatingPartial(modelBuilder);

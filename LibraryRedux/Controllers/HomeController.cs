@@ -61,9 +61,48 @@ namespace LibraryRedux.Controllers
             return View("Search", searchList);
         }
 
-        public IActionResult CheckOut(Book book)
+        public IActionResult CheckOut(string book)
         {
-            return View(book);
+            LibraryDBContext db = new LibraryDBContext();
+            Book tempBook = new Book();
+            foreach (Book entry in db.Book)
+            {
+                if (entry.Title == book)
+                {
+                    tempBook = entry;
+                    entry.Checkedout += 1;
+                    entry.Available -= 1;
+                    db.Book.Update(entry);
+                }
+            }
+
+            
+
+            AspNetUsers tempUser = new AspNetUsers();
+
+            if (User.Identity.Name != null)
+            {
+                foreach (AspNetUsers user in db.AspNetUsers)
+                {
+                    if (User.Identity.Name == user.Email)
+                    {
+                        tempUser = user;
+                    }
+                }
+            }
+
+            DateTime DueDate = new DateTime();
+            DueDate = DueDate.AddDays(14);
+
+            db.Transaction.Update(new Transaction()
+            {
+                Userid = tempUser.Id,
+                Booktitle = tempBook.Id,
+                Duedate = DueDate,
+                Renew = "false"
+            });
+
+            return View(tempBook);
         }
 
         [Authorize]

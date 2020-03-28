@@ -11,6 +11,7 @@ namespace LibraryRedux.Models
             AspNetUserLogins = new HashSet<AspNetUserLogins>();
             AspNetUserRoles = new HashSet<AspNetUserRoles>();
             AspNetUserTokens = new HashSet<AspNetUserTokens>();
+            Transaction = new HashSet<Transaction>();
         }
 
         public string Id { get; set; }
@@ -33,5 +34,6 @@ namespace LibraryRedux.Models
         public virtual ICollection<AspNetUserLogins> AspNetUserLogins { get; set; }
         public virtual ICollection<AspNetUserRoles> AspNetUserRoles { get; set; }
         public virtual ICollection<AspNetUserTokens> AspNetUserTokens { get; set; }
+        public virtual ICollection<Transaction> Transaction { get; set; }
     }
 }

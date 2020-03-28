@@ -29,7 +29,7 @@
                     }else
                     {
                         <td><i>@book.Available Available</i></td>
-                        <td><button class="badge-info" asp-action="CheckOut" asp-controller="Home" name="book as @book">Check Out</button> </td>
+                        <td><button class="badge-info" value ="Check Out" onclick="location.href='@Url.Action("CheckOut","Home", new { book = book.Title})'">Check Out</button></td>
                     }
                 </tr>
             }
