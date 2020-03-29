@@ -4,5 +4,21 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@model List<Transaction>
+
 <h1>Return</h1>
+<table>
+    @{
+        foreach (Transaction check in Model)
+        {
+            <tr>
+                <td>
+                    @check.Booktitle
+                </td>
+                <td>Due: @check.Duedate.ToString()</td>
+            </tr>
+        }
+
+    }
+</table>
 

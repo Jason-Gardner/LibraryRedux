@@ -36,7 +36,8 @@ namespace LibraryRedux.Controllers
             }
             else
             {
-                return View("Return");
+                List<Transaction> checkedOut = ReturnBook();
+                return View("Return", checkedOut);
             }
         }
 
@@ -70,9 +71,9 @@ namespace LibraryRedux.Controllers
                 if (entry.Title == book)
                 {
                     tempBook = entry;
-                    entry.Checkedout += 1;
-                    entry.Available -= 1;
-                    db.Book.Update(entry);
+                    tempBook.Checkedout += 1;
+                    tempBook.Available -= 1;
+                    db.Book.Update(tempBook);
                 }
             }
 
@@ -91,7 +92,7 @@ namespace LibraryRedux.Controllers
                 }
             }
 
-            DateTime DueDate = new DateTime();
+            DateTime DueDate = DateTime.Now;
             DueDate = DueDate.AddDays(14);
 
             db.Transaction.Update(new Transaction()
@@ -102,10 +103,42 @@ namespace LibraryRedux.Controllers
                 Renew = "false"
             });
 
+            db.SaveChanges();
+
             return View(tempBook);
         }
 
         [Authorize]
+        public List<Transaction> ReturnBook()
+        {
+            LibraryDBContext db = new LibraryDBContext();
+
+            AspNetUsers tempUser = new AspNetUsers();
+
+            if (User.Identity.Name != null)
+            {
+                foreach (AspNetUsers user in db.AspNetUsers)
+                {
+                    if (User.Identity.Name == user.Email)
+                    {
+                        tempUser = user;
+                    }
+                }
+            }
+
+            List<Transaction> checkedOut = new List<Transaction>();
+
+            foreach (Transaction check in db.Transaction)
+            {
+                if (check.Userid == tempUser.Id)
+                {
+                    checkedOut.Add(check);
+                }
+            }
+
+            return checkedOut;
+        }
+
         public IActionResult Return()
         {
             return View();
