@@ -4,18 +4,26 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@model List<Transaction>
+@model List<Book>
 
 <h1>Return</h1>
 <table>
     @{
-        foreach (Transaction check in Model)
+        foreach (Book check in Model)
         {
             <tr>
                 <td>
-                    @check.Booktitle
+                    @check.Title
                 </td>
-                <td>Due: @check.Duedate.ToString()</td>
+                @if (ViewBag.Message != null) {
+                    <td>@ViewBag.Message</td>
+                }
+                else
+                {
+                    <td>Due: @ViewBag.Due</td>
+                }
+            <td><button class="badge-info" value="Return" onclick="location.href='@Url.Action("ReturnBook","Home", new { book = check.Title})'">Check Out</button></td>
+                
             </tr>
         }
 

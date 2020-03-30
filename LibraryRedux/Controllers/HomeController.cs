@@ -36,8 +36,31 @@ namespace LibraryRedux.Controllers
             }
             else
             {
-                List<Transaction> checkedOut = ReturnBook();
-                return View("Return", checkedOut);
+                List<Transaction> checkedOut = UserBook();
+                List<Book> userOut = new List<Book>();
+                LibraryDBContext db = new LibraryDBContext();
+
+                foreach (Transaction check in checkedOut)
+                {
+                    foreach(Book book in db.Book)
+                    {
+                        if (check.Booktitle == book.Id)
+                        {
+                            if (check.Duedate < DateTime.Now)
+                            {
+                                ViewBag.Date = check.Duedate.ToShortDateString();
+                                userOut.Add(book);
+                            }
+                            else
+                            {
+                                ViewBag.Message = "Book Overdue!";
+                                userOut.Add(book);
+                            }
+                            
+                        }
+                    }
+                }
+                return View("Return", userOut);
             }
         }
 
@@ -77,8 +100,6 @@ namespace LibraryRedux.Controllers
                 }
             }
 
-            
-
             AspNetUsers tempUser = new AspNetUsers();
 
             if (User.Identity.Name != null)
@@ -109,7 +130,7 @@ namespace LibraryRedux.Controllers
         }
 
         [Authorize]
-        public List<Transaction> ReturnBook()
+        public List<Transaction> UserBook()
         {
             LibraryDBContext db = new LibraryDBContext();
 
@@ -141,6 +162,24 @@ namespace LibraryRedux.Controllers
 
         public IActionResult Return()
         {
+            return View();
+        }
+
+        public IActionResult ReturnBook(string book)
+        {
+            LibraryDBContext db = new LibraryDBContext();
+            Book tempBook = new Book();
+            foreach (Book entry in db.Book)
+            {
+                if (entry.Title == book)
+                {
+                    tempBook = entry;
+                    tempBook.Checkedout -= 1;
+                    tempBook.Available += 1;
+                    db.Book.Update(tempBook);
+                }
+            }
+
             return View();
         }
 
