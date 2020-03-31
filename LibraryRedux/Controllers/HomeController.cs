@@ -42,11 +42,11 @@ namespace LibraryRedux.Controllers
 
                 foreach (Transaction check in checkedOut)
                 {
-                    foreach(Book book in db.Book)
+                    foreach (Book book in db.Book)
                     {
                         if (check.Booktitle == book.Id)
                         {
-                            if (check.Duedate < DateTime.Now)
+                            if (check.Duedate > DateTime.Now)
                             {
                                 ViewBag.Date = check.Duedate.ToShortDateString();
                                 userOut.Add(book);
@@ -56,7 +56,7 @@ namespace LibraryRedux.Controllers
                                 ViewBag.Message = "Book Overdue!";
                                 userOut.Add(book);
                             }
-                            
+
                         }
                     }
                 }
@@ -100,25 +100,14 @@ namespace LibraryRedux.Controllers
                 }
             }
 
-            AspNetUsers tempUser = new AspNetUsers();
-
-            if (User.Identity.Name != null)
-            {
-                foreach (AspNetUsers user in db.AspNetUsers)
-                {
-                    if (User.Identity.Name == user.Email)
-                    {
-                        tempUser = user;
-                    }
-                }
-            }
+            AspNetUsers currentUser = FindUser();
 
             DateTime DueDate = DateTime.Now;
             DueDate = DueDate.AddDays(14);
 
             db.Transaction.Update(new Transaction()
             {
-                Userid = tempUser.Id,
+                Userid = currentUser.Id,
                 Booktitle = tempBook.Id,
                 Duedate = DueDate,
                 Renew = "false"
@@ -134,24 +123,13 @@ namespace LibraryRedux.Controllers
         {
             LibraryDBContext db = new LibraryDBContext();
 
-            AspNetUsers tempUser = new AspNetUsers();
-
-            if (User.Identity.Name != null)
-            {
-                foreach (AspNetUsers user in db.AspNetUsers)
-                {
-                    if (User.Identity.Name == user.Email)
-                    {
-                        tempUser = user;
-                    }
-                }
-            }
+            AspNetUsers currentUser = FindUser();
 
             List<Transaction> checkedOut = new List<Transaction>();
 
             foreach (Transaction check in db.Transaction)
             {
-                if (check.Userid == tempUser.Id)
+                if (check.Userid == currentUser.Id)
                 {
                     checkedOut.Add(check);
                 }
@@ -180,7 +158,19 @@ namespace LibraryRedux.Controllers
                 }
             }
 
-            return View();
+            AspNetUsers currentUser = FindUser();
+
+            foreach (Transaction check in db.Transaction)
+            {
+                if (check.Booktitle == tempBook.Id && check.Userid == currentUser.Id)
+                {
+                    db.Remove(check);
+                }
+            }
+
+            db.SaveChanges();
+
+            return View("Return");
         }
 
         public IActionResult Privacy()
@@ -193,6 +183,22 @@ namespace LibraryRedux.Controllers
             LibraryDBContext db = new LibraryDBContext();
             library = db.Book.ToList<Book>();
             return library;
+        }
+
+        public AspNetUsers FindUser()
+        {
+            LibraryDBContext db = new LibraryDBContext();
+            AspNetUsers currentUser = new AspNetUsers();
+
+            foreach (AspNetUsers user in db.AspNetUsers)
+            {
+                if (User.Identity.Name == user.Email)
+                {
+                    currentUser = user;
+                }
+            }
+
+            return currentUser;
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

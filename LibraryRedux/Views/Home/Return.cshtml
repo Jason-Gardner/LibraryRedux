@@ -7,6 +7,8 @@
 @model List<Book>
 
 <h1>Return</h1>
+@if (Model != null)
+{
 <table>
     @{
         foreach (Book check in Model)
@@ -15,18 +17,25 @@
                 <td>
                     @check.Title
                 </td>
-                @if (ViewBag.Message != null) {
+                @if (ViewBag.Message != null)
+                {
                     <td>@ViewBag.Message</td>
                 }
                 else
                 {
-                    <td>Due: @ViewBag.Due</td>
+                    <td>Due: @ViewBag.Date</td>
                 }
-            <td><button class="badge-info" value="Return" onclick="location.href='@Url.Action("ReturnBook","Home", new { book = check.Title})'">Check Out</button></td>
-                
+                <td><button class="badge-info" value="Return" onclick="location.href='@Url.Action("ReturnBook","Home", new { book = check.Title})'">Return Book</button></td>
+
             </tr>
         }
 
     }
 </table>
+        }
+        else
+        {
+            <p>You currently have no books checked out.</p>
+        }
+
 
