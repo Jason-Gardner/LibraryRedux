@@ -19,11 +19,11 @@
                 </td>
                 @if (ViewBag.Message != null)
                 {
-                    <td>@ViewBag.Message</td>
+                    <td>@TempData.Peek("Message")</td>
                 }
                 else
                 {
-                    <td>Due: @ViewBag.Date</td>
+                    <td>Due: @TempData.Peek("Date")</td>
                 }
                 <td><button class="badge-info" value="Return" onclick="location.href='@Url.Action("ReturnBook","Home", new { book = check.Title})'">Return Book</button></td>
 

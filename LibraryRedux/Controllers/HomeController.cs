@@ -40,27 +40,35 @@ namespace LibraryRedux.Controllers
                 List<Book> userOut = new List<Book>();
                 LibraryDBContext db = new LibraryDBContext();
 
-                foreach (Transaction check in checkedOut)
+                if (checkedOut.Count > 0)
                 {
-                    foreach (Book book in db.Book)
+                    foreach (Transaction check in checkedOut)
                     {
-                        if (check.Booktitle == book.Id)
+                        foreach (Book book in db.Book)
                         {
-                            if (check.Duedate > DateTime.Now)
+                            if (check.Booktitle == book.Id)
                             {
-                                ViewBag.Date = check.Duedate.ToShortDateString();
-                                userOut.Add(book);
-                            }
-                            else
-                            {
-                                ViewBag.Message = "Book Overdue!";
-                                userOut.Add(book);
-                            }
+                                if (check.Duedate > DateTime.Now)
+                                {
+                                    TempData["Date"] = check.Duedate.ToShortDateString();
+                                    userOut.Add(book);
+                                }
+                                else
+                                {
+                                    TempData["Message"] = "Book Overdue!";
+                                    userOut.Add(book);
+                                }
 
+                            }
                         }
                     }
+                    return View("Return", userOut);
                 }
-                return View("Return", userOut);
+
+                else
+                {
+                    return View("Return");
+                }
             }
         }
 
@@ -170,7 +178,37 @@ namespace LibraryRedux.Controllers
 
             db.SaveChanges();
 
-            return View("Return");
+            List<Transaction> checkedOut = UserBook();
+            List<Book> userOut = new List<Book>();
+
+            if (checkedOut.Count > 0)
+            {
+                foreach (Transaction check in checkedOut)
+                {
+                    foreach (Book books in db.Book)
+                    {
+                        if (check.Booktitle == books.Id)
+                        {
+                            if (check.Duedate > DateTime.Now)
+                            {
+                                TempData["Date"] = check.Duedate.ToShortDateString();
+                                userOut.Add(books);
+                            }
+                            else
+                            {
+                                TempData["Message"] = "Book Overdue!";
+                                userOut.Add(books);
+                            }
+
+                        }
+                    }
+                }
+                return View("Return", userOut);
+            }
+            else
+            {
+                return View("Return");
+            }
         }
 
         public IActionResult Privacy()
