@@ -13,6 +13,13 @@
     <button type="submit">Search</button>
 </form>
 
+@{ 
+    if (TempData.Peek("Check") as string != null)
+    {
+        <p>You have checked out <b>@TempData["Check"]</b></p>
+    }
+}
+
 @{
     if (Model != null)
     {

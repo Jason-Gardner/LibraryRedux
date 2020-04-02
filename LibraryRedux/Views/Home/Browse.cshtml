@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewData["Title"] = "Browse";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    LibraryDBContext db = new LibraryDBContext();
+    List<Book> libraryList = new List<Book>();
+    libraryList = db.Book.ToList<Book>();
+}
+
+<h1>Browse</h1>
+<table>
+    <tr>
+        <td>Title</td><td>Author</td><td colspan="2">Availability</td>
+    </tr>
+    @foreach (Book book in libraryList)
+    {
+        <tr>
+            <td>@book.Title</td><td>@book.Author</td><td>@book.Available Available</td><td>@book.Checkedout Checked Out</td>
+        </tr>
+
+    }
+</table>
+

@@ -23,16 +23,23 @@ namespace LibraryRedux.Controllers
         [Authorize]
         public IActionResult Index()
         {
-            UpdateLibrary(Library);
             return View();
         }
 
         [Authorize]
         public IActionResult Menu(string menu)
         {
+            if (menu == null)
+            {
+                return View();
+            }
             if (menu == "search")
             {
                 return View("Search");
+            }
+            if (menu == "library")
+            {
+                return View("Browse");
             }
             else
             {
@@ -70,6 +77,11 @@ namespace LibraryRedux.Controllers
                     return View("Return");
                 }
             }
+        }
+
+        public IActionResult Browse()
+        {
+            return View();
         }
 
         [Authorize]
@@ -121,9 +133,10 @@ namespace LibraryRedux.Controllers
                 Renew = "false"
             });
 
+            TempData["Check"] = tempBook.Title;
             db.SaveChanges();
 
-            return View(tempBook);
+            return RedirectToAction("Search");
         }
 
         [Authorize]
@@ -207,7 +220,7 @@ namespace LibraryRedux.Controllers
             }
             else
             {
-                return View("Return");
+                return RedirectToAction("Return");
             }
         }
 
