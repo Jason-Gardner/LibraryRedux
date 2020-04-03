@@ -13,7 +13,7 @@
     <button type="submit">Search</button>
 </form>
 
-@{ 
+@{
     if (TempData.Peek("Check") as string != null)
     {
         <p>You have checked out <b>@TempData["Check"]</b></p>
@@ -33,14 +33,17 @@
                     @if (book.Available == 0)
                     {
                         <td><b>Not available</b></td>
-                    }else
+                    }
+                    else
                     {
                         <td><i>@book.Available Available</i></td>
-                        <td><button class="badge-info" value ="Check Out" onclick="location.href='@Url.Action("CheckOut","Home", new { book = book.Title})'">Check Out</button></td>
+                        <td><button class="badge-info" value="Check Out" onclick="location.href='@Url.Action("CheckOut","Home", new { book = book.Title})'">Check Out</button></td>
                     }
                 </tr>
             }
         </table>
     }
 }
+
+<a class="badge" style="font-size: 18px; padding-top: 10px" asp-action="Index" asp-controller="Home">Return to Menu</a>
 

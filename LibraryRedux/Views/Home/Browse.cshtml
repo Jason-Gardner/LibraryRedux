@@ -7,17 +7,26 @@
     libraryList = db.Book.ToList<Book>();
 }
 
-<h1>Browse</h1>
-<table>
-    <tr>
-        <td>Title</td><td>Author</td><td colspan="2">Availability</td>
-    </tr>
-    @foreach (Book book in libraryList)
-    {
-        <tr>
-            <td>@book.Title</td><td>@book.Author</td><td>@book.Available Available</td><td>@book.Checkedout Checked Out</td>
-        </tr>
+    <div class="text-center">
+        <h1>Browse</h1>
+        <table align="center" style="text-align: center; border: 3px solid black">
+            <tr style="padding: 2px">
+                <td><b>Title</b></td>
+                <td><b>Author</b></td>
+                <td colspan="3"><b>Availability</b></td>
+            </tr>
+            @foreach (Book book in libraryList)
+            {
+                <tr>
+                    <td>@book.Title</td>
+                    <td>@book.Author</td>
+                    <td>@book.Available Available</td>
+                    <td></td>
+                    <td>@book.Checkedout Checked Out</td>
+                </tr>
 
-    }
-</table>
+            }
+        </table>
+        <a class="badge" style="font-size: 18px" asp-action="Index" asp-controller="Home">Return to Menu</a>
+    </div>
 
