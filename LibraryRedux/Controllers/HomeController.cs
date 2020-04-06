@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using LibraryRedux.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Text.Json;
 
 namespace LibraryRedux.Controllers
 {
@@ -49,29 +50,8 @@ namespace LibraryRedux.Controllers
 
                 if (checkedOut.Count > 0)
                 {
-                    foreach (Transaction check in checkedOut)
-                    {
-                        foreach (Book book in db.Book)
-                        {
-                            if (check.Booktitle == book.Id)
-                            {
-                                if (check.Duedate > DateTime.Now)
-                                {
-                                    TempData["Date"] = check.Duedate.ToShortDateString();
-                                    userOut.Add(book);
-                                }
-                                else
-                                {
-                                    TempData["Message"] = "Book Overdue!";
-                                    userOut.Add(book);
-                                }
-
-                            }
-                        }
-                    }
-                    return View("Return", userOut);
+                    return View("Return", checkedOut);
                 }
-
                 else
                 {
                     return View("Return");
@@ -127,8 +107,8 @@ namespace LibraryRedux.Controllers
 
             db.Transaction.Update(new Transaction()
             {
-                Userid = currentUser.Id,
-                Booktitle = tempBook.Id,
+                Userid = User.Identity.Name,
+                Booktitle = JsonSerializer.Serialize<Book>(tempBook),
                 Duedate = DueDate,
                 Renew = "false"
             });
@@ -150,7 +130,7 @@ namespace LibraryRedux.Controllers
 
             foreach (Transaction check in db.Transaction)
             {
-                if (check.Userid == currentUser.Id)
+                if (check.Userid == User.Identity.Name)
                 {
                     checkedOut.Add(check);
                 }
@@ -183,7 +163,7 @@ namespace LibraryRedux.Controllers
 
             foreach (Transaction check in db.Transaction)
             {
-                if (check.Booktitle == tempBook.Id && check.Userid == currentUser.Id)
+                if ((JsonSerializer.Deserialize<Book>(check.Booktitle)).Id == tempBook.Id && check.Userid == currentUser.Id)
                 {
                     db.Remove(check);
                 }
@@ -200,7 +180,7 @@ namespace LibraryRedux.Controllers
                 {
                     foreach (Book books in db.Book)
                     {
-                        if (check.Booktitle == books.Id)
+                        if ((JsonSerializer.Deserialize<Book>(check.Booktitle)).Id == books.Id)
                         {
                             if (check.Duedate > DateTime.Now)
                             {

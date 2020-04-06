@@ -1,31 +1,35 @@
-﻿
+﻿@using System.Text.Json 
+
 @{
     ViewData["Title"] = "Return";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@model List<Book>
+@model List<Transaction>
 
 <h1>Return</h1>
 @if (Model != null)
 {
 <table>
     @{
-        foreach (Book check in Model)
+        foreach (Transaction check in Model)
         {
             <tr>
                 <td>
-                    @check.Title
+                    @{ 
+                        Book tempBook = JsonSerializer.Deserialize<Book>(check.Booktitle);
+                    } 
+                    @tempBook.Title
                 </td>
-                @if (ViewBag.Message != null)
+                @if (check.Duedate < DateTime.Today)
                 {
-                    <td>@TempData.Peek("Message")</td>
+                    <td><b>Your book is overdue!</b></td>
                 }
                 else
                 {
-                    <td>Due: @TempData.Peek("Date")</td>
+                    <td>Due: @check.Duedate</td>
                 }
-                <td><button class="badge-info" value="Return" onclick="location.href='@Url.Action("ReturnBook","Home", new { book = check.Title})'">Return Book</button></td>
+                <td><button class="badge-info" value="Return" onclick="location.href='@Url.Action("ReturnBook","Home", new { book = tempBook.Title})'">Return Book</button></td>
 
             </tr>
         }

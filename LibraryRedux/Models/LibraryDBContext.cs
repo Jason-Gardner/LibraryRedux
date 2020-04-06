@@ -167,33 +167,22 @@ namespace LibraryRedux.Models
             {
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.Booktitle).HasColumnName("booktitle");
+                entity.Property(e => e.Booktitle)
+                    .IsRequired()
+                    .HasColumnName("booktitle");
 
                 entity.Property(e => e.Duedate)
                     .HasColumnName("duedate")
                     .HasColumnType("datetime");
 
                 entity.Property(e => e.Renew)
-                    .IsRequired()
                     .HasColumnName("renew")
-                    .HasMaxLength(10);
+                    .HasMaxLength(20);
 
                 entity.Property(e => e.Userid)
                     .IsRequired()
                     .HasColumnName("userid")
                     .HasMaxLength(450);
-
-                entity.HasOne(d => d.BooktitleNavigation)
-                    .WithMany(p => p.Transaction)
-                    .HasForeignKey(d => d.Booktitle)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Transaction_Book");
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.Transaction)
-                    .HasForeignKey(d => d.Userid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Transaction_AspNetUsers");
             });
 
             OnModelCreatingPartial(modelBuilder);
