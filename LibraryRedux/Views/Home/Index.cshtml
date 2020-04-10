@@ -12,6 +12,10 @@
                 <option value="library">View all Books</option>
                 <option value="search">Search for a book</option>
                 <option value="return">Return a book</option>
+                @if (User.Identity.Name == "admin@library.edu")
+                {
+                    <option value="manage">ADMIN MODE</option>
+                }
             </select>
             <button type="submit">Enter the Library</button>
         </form>

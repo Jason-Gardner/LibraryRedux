@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewData["Title"] = "Administrator View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    LibraryDBContext db = new LibraryDBContext();
+    List<Book> libraryList = new List<Book>();
+    libraryList = db.Book.ToList<Book>();
+}
+
+<div class="text-center">
+    <h2>Library Management</h2>
+    <table align="center" style="text-align: center; border: 3px solid black">
+        <tr style="padding: 2px">
+            <td><b>Title</b></td>
+            <td><b>Author</b></td>
+            <td colspan="3"><b>Availability</b></td>
+        </tr>
+        @foreach (Book book in libraryList)
+        {
+            <tr>
+                <td>@book.Title</td>
+                <td>@book.Author</td>
+                <td>@book.Available Available</td>
+                <td></td>
+                <td>@book.Checkedout Checked Out</td>
+            </tr>
+
+        }
+    </table>
+    <a class="badge" style="font-size: 18px" asp-action="Index" asp-controller="Home">Return to Menu</a>
+</div>
+

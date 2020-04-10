@@ -34,6 +34,10 @@ namespace LibraryRedux.Controllers
             {
                 return View();
             }
+            if (menu == "manage")
+            {
+                return View("Manage");
+            }
             if (menu == "search")
             {
                 return View("Search");
@@ -59,7 +63,14 @@ namespace LibraryRedux.Controllers
             }
         }
 
+        [Authorize]
         public IActionResult Browse()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public IActionResult Manage()
         {
             return View();
         }
