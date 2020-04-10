@@ -69,6 +69,35 @@ namespace LibraryRedux.Controllers
             return View();
         }
 
+        public IActionResult userManage(string user)
+        {
+            LibraryDBContext db = new LibraryDBContext();
+            List<AspNetUsers> userList = db.AspNetUsers.ToList<AspNetUsers>();
+            AspNetUsers selected = new AspNetUsers();
+
+            foreach (AspNetUsers logons in userList)
+            {
+                if (logons.UserName == user)
+                {
+                    selected = logons;
+                    
+                }
+            }
+
+            return View("Manage", selected);
+        }
+
+        public IActionResult bookManage()
+        {
+            return View("Manage");
+        }
+
+        public IActionResult addBook()
+        {
+            return View("Update");
+        }
+
+
         [Authorize]
         public IActionResult Manage()
         {
