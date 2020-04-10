@@ -3,30 +3,35 @@
     ViewData["Title"] = "Administrator View";
     Layout = "~/Views/Shared/_Layout.cshtml";
     LibraryDBContext db = new LibraryDBContext();
-    List<Book> libraryList = new List<Book>();
-    libraryList = db.Book.ToList<Book>();
+    List<Book> libraryList = db.Book.ToList<Book>();
+    List<AspNetUsers> userList = db.AspNetUsers.ToList<AspNetUsers>();
 }
 
+<script src="~/js/site.js"></script>
+
 <div class="text-center">
-    <h2>Library Management</h2>
-    <table align="center" style="text-align: center; border: 3px solid black">
-        <tr style="padding: 2px">
-            <td><b>Title</b></td>
-            <td><b>Author</b></td>
-            <td colspan="3"><b>Availability</b></td>
-        </tr>
+    <h2>Manage User</h2>
+    <select id="user" value="user">
+        <option value=""></option>
+        @foreach (AspNetUsers user in userList)
+        {
+            <option value="@user.UserName">@user.UserName</option>
+        }
+    </select>
+    <button type="submit" onsubmit="displayUser()">Display User</button>
+</div>
+
+<p id="userName"></p>
+
+
+<div class="text-center">
+    <h2>Manage Books</h2>
+    <select value="book">
+        <option value=""></option>
         @foreach (Book book in libraryList)
         {
-            <tr>
-                <td>@book.Title</td>
-                <td>@book.Author</td>
-                <td>@book.Available Available</td>
-                <td></td>
-                <td>@book.Checkedout Checked Out</td>
-            </tr>
-
+            <option value="@book.Title">@book.Title</option>
         }
-    </table>
-    <a class="badge" style="font-size: 18px" asp-action="Index" asp-controller="Home">Return to Menu</a>
+    </select>
 </div>
 
