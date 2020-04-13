@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewData["Title"] = "Administrator View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    LibraryDBContext db = new LibraryDBContext();
+    List<Book> libraryList = db.Book.ToList<Book>();
+}
+
+@model Book
+
+<h1>ManageBook</h1>
+
+<div class="text-center">
+    <h2>View Current Library</h2>
+    <form asp-action="ManageBooks" asp-controller="Home">
+        <select value="book">
+            <option value=""></option>
+            @foreach (Book book in libraryList)
+            {
+                <option value="@book.Title">@book.Title</option>
+            }
+        </select>
+        <button type="submit">Manage Book Entry</button>
+    </form>
+    <form asp-action="Update" asp-controller="Home">
+        <button type="submit">Add New Book</button>
+    </form>
+</div>
+
+<p id="book">
+    @if (Model != null)
+    {
+        <table align="center" style="text-align: center">
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Action</th>
+            </tr>
+            <tr>
+                <td>@Model.Title</td>
+                <td>@Model.Author</td>
+                <td><button type="button">Manage</button></td>
+            </tr>
+
+        </table>
+    }
+</p>
+
+
+<a class="badge" style="font-size: 18px" asp-action="Admin" asp-controller="Home">Return to Admin Page</a>

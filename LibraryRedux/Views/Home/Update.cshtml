@@ -6,20 +6,25 @@
 
 <h1>Update</h1>
 
-<form>
+<form asp-action="addBook" asp-controller="Home">
     <table align="center">
         <tr>
-            <td><input type="text" /></td>
+            <td>Title: <input type="text" name="title"/></td>
         </tr>
         <tr>
-            <td><input type="text" /></td>
+            <td>Author: <input type="text" name="author"/></td>
         </tr>
         <tr>
-            <td><input type="text" /></td>
+            <td>Genre: <input type="text" name="genre"/></td>
         </tr>
         <tr>
-            <td><input type="text" /></td>
+            <td>Number of Books: <input type="text" name="available"/></td>
+        </tr>
+        <tr>
+            <td>Media Type: <input type="text" name="type"/></td>
         </tr>
     </table>
+    <button type="submit">Add New Book</button>
 </form>
+<a class="badge" style="font-size: 18px" asp-action="Index" asp-controller="Home">Return to Menu</a>
 

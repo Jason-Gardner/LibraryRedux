@@ -1,0 +1,49 @@
+﻿
+@{
+    ViewData["Title"] = "Administrator View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    LibraryDBContext db = new LibraryDBContext();
+    List<AspNetUsers> userList = db.AspNetUsers.ToList<AspNetUsers>();
+}
+
+@model AspNetUsers
+
+<div class="text-center">
+    <h2>Manage User</h2>
+    <form asp-action="ManageUsers" asp-controller="Home">
+        <select id="user" name="user">
+            <option value=""></option>
+            @foreach (AspNetUsers user in userList)
+            {
+                <option value="@user.UserName">@user.UserName</option>
+            }
+        </select>
+        <button type="submit">Display User</button>
+    </form>
+</div>
+
+<p id="userName">
+    @if (Model != null)
+    {
+        <table align="center" style="text-align: center">
+            <tr>
+                <th>User</th>
+                <th>Email</th>
+                <th>Action</th>
+            </tr>
+            <tr>
+                <td>@Model.UserName</td>
+                <td>@Model.Email</td>
+                <td><button type="button">Suspend</button></td>
+            </tr>
+
+        </table>
+    }
+</p>
+
+<a class="badge" style="font-size: 18px" asp-action="Admin" asp-controller="Home">Return to Admin Page</a>
+
+
+
+
+

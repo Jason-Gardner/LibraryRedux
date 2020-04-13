@@ -36,7 +36,7 @@ namespace LibraryRedux.Controllers
             }
             if (menu == "manage")
             {
-                return View("Manage");
+                return View("Admin");
             }
             if (menu == "search")
             {
@@ -64,39 +64,86 @@ namespace LibraryRedux.Controllers
         }
 
         [Authorize]
+        public IActionResult Admin()
+        {
+            return View();
+        }
+
+        [Authorize]
         public IActionResult Browse()
         {
             return View();
         }
 
-        public IActionResult userManage(string user)
+        public IActionResult ManageUser()
+        {
+            return View();
+        }
+
+        public IActionResult ManageUsers(string user)
         {
             LibraryDBContext db = new LibraryDBContext();
             List<AspNetUsers> userList = db.AspNetUsers.ToList<AspNetUsers>();
             AspNetUsers selected = new AspNetUsers();
 
-            foreach (AspNetUsers logons in userList)
+            if (user != null)
             {
-                if (logons.UserName == user)
+                foreach (AspNetUsers logons in userList)
                 {
-                    selected = logons;
-                    
+                    if (logons.UserName == user)
+                    {
+                        selected = logons;
+
+                    }
                 }
             }
 
-            return View("Manage", selected);
+            return View("ManageUser", selected);
         }
 
-        public IActionResult bookManage()
+        public IActionResult ManageBook()
         {
-            return View("Manage");
+            return View();
         }
 
-        public IActionResult addBook()
+        public IActionResult ManageBooks(string myBook)
+        {
+            LibraryDBContext db = new LibraryDBContext();
+            Book viewBook = new Book();
+
+            foreach(Book book in db.Book)
+            {
+                if (book.Title == myBook)
+                {
+                    viewBook = book;
+                }
+            }
+
+            return View("ManageBook", viewBook);
+        }
+
+        public IActionResult Update()
         {
             return View("Update");
         }
 
+        public IActionResult addBook(string Title, string Author, string Genre, int Available, string Type)
+        {
+            LibraryDBContext db = new LibraryDBContext();
+            Book newBook = new Book();
+
+            newBook.Title = Title;
+            newBook.Author = Author;
+            newBook.Genre = Genre;
+            newBook.Available = Available;
+            newBook.Checkedout = 0;
+            newBook.Type = Type;
+
+            db.Book.Add(newBook);
+            db.SaveChanges();
+
+            return View("Manage");
+        }
 
         [Authorize]
         public IActionResult Manage()
