@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewData["Title"] = "Adminstrator View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model Book
+
+<h1>UpdateBook</h1>
+<form asp-action="Update" asp-controller="Home">
+    <table>
+        <tr>
+            <td>Title: <input type="text" value="@Model.Title" /></td>
+        </tr>
+        <tr>
+            <td>Author: <input type="text" value="@Model.Author" /></td>
+        </tr>
+        <tr>
+            <td>Number Available: <input type="text" value="@Model.Available" /></td>
+        </tr>
+        <tr>
+            <td>Media Type: <input type="text" value="@Model.Type" /></td>
+        </tr>
+    </table>
+</form>
+

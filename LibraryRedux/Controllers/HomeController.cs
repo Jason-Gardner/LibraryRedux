@@ -21,12 +21,175 @@ namespace LibraryRedux.Controllers
             _logger = logger;
         }
 
+        // Initial Index Action
         [Authorize]
         public IActionResult Index()
         {
             return View();
         }
 
+        // Browse the Library
+        [Authorize]
+        public IActionResult Browse()
+        {
+            return View();
+        }
+
+        // Search Action and Search functionality
+        [Authorize]
+        public IActionResult Search()
+        {
+            return View();
+        }
+
+        public IActionResult SearchLibrary(string search)
+        {
+            List<Book> searchList = new List<Book>();
+            LibraryDBContext db = new LibraryDBContext();
+            foreach (Book book in db.Book)
+            {
+                if (book.Title.ToLower().Contains(search) | book.Author.ToLower().Contains(search.Trim().ToLower()))
+                {
+                    searchList.Add(book);
+                }
+            }
+
+            return View("Search", searchList);
+        }
+
+        // Admin Actions for Admin Account
+        [Authorize]
+        public IActionResult Admin()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public IActionResult ManageUser()
+        {
+            return View();
+        }
+
+        public IActionResult ManageBook()
+        {
+            return View();
+        }
+
+        public IActionResult Update()
+        {
+            return View("Update");
+        }
+
+        public IActionResult ManageUsers(string user)
+        {
+            return View("ManageUser", FindUser(user));
+        }
+
+        public IActionResult deleteUser(string currentUser)
+        {
+            LibraryDBContext db = new LibraryDBContext();
+
+            db.AspNetUsers.Remove(FindUser(currentUser));
+            db.SaveChanges();
+
+            return View("Admin");
+        }
+
+        public IActionResult ManageBooks(string currentBook)
+        {
+            return View("ManageBook", FindBook(currentBook));
+        }
+
+        public IActionResult SelectManageBook(string currentBook)
+        {
+            return View("SelectManageBook", FindBook(currentBook));
+        }
+
+        public IActionResult addBook(string Title, string Author, string Genre, int Available, string Type)
+        {
+            LibraryDBContext db = new LibraryDBContext();
+            Book newBook = new Book();
+
+            newBook.Title = Title;
+            newBook.Author = Author;
+            newBook.Genre = Genre;
+            newBook.Available = Available;
+            newBook.Checkedout = 0;
+            newBook.Type = Type;
+
+            db.Book.Add(newBook);
+            db.SaveChanges();
+
+            return View("Manage");
+        }
+
+        [Authorize]
+        public IActionResult Manage()
+        {
+            return View();
+        }
+
+        // Back-end Functions including making sure we have the current user, refactored user search
+        public AspNetUsers FindUser(string user)
+        {
+            LibraryDBContext db = new LibraryDBContext();
+            List<AspNetUsers> userList = db.AspNetUsers.ToList<AspNetUsers>();
+            AspNetUsers selected = new AspNetUsers();
+
+            if (user != null)
+            {
+                foreach (AspNetUsers logons in userList)
+                {
+                    if (logons.UserName == user)
+                    {
+                        selected = logons;
+
+                    }
+                }
+            }
+            return selected;
+        }
+
+        public Book FindBook(string currentBook)
+        {
+            LibraryDBContext db = new LibraryDBContext();
+            Book viewBook = new Book();
+
+            foreach (Book book in db.Book)
+            {
+                if (book.Title == currentBook)
+                {
+                    viewBook = book;
+                }
+            }
+
+            return viewBook;
+        }
+
+        public List<Book> UpdateLibrary(List<Book> library)
+        {
+            LibraryDBContext db = new LibraryDBContext();
+            library = db.Book.ToList<Book>();
+            return library;
+        }
+
+        public AspNetUsers FindCurrentUser()
+        {
+            LibraryDBContext db = new LibraryDBContext();
+            AspNetUsers currentUser = new AspNetUsers();
+
+            foreach (AspNetUsers user in db.AspNetUsers)
+            {
+                if (User.Identity.Name == user.Email)
+                {
+                    currentUser = user;
+                }
+            }
+
+            return currentUser;
+        }
+
+        // Main Menu Action - Funnels selection from Index view into correct Action/View
         [Authorize]
         public IActionResult Menu(string menu)
         {
@@ -61,116 +224,9 @@ namespace LibraryRedux.Controllers
                     return View("Return");
                 }
             }
-        }
+        }        
 
-        [Authorize]
-        public IActionResult Admin()
-        {
-            return View();
-        }
-
-        [Authorize]
-        public IActionResult Browse()
-        {
-            return View();
-        }
-
-        public IActionResult ManageUser()
-        {
-            return View();
-        }
-
-        public IActionResult ManageUsers(string user)
-        {
-            LibraryDBContext db = new LibraryDBContext();
-            List<AspNetUsers> userList = db.AspNetUsers.ToList<AspNetUsers>();
-            AspNetUsers selected = new AspNetUsers();
-
-            if (user != null)
-            {
-                foreach (AspNetUsers logons in userList)
-                {
-                    if (logons.UserName == user)
-                    {
-                        selected = logons;
-
-                    }
-                }
-            }
-
-            return View("ManageUser", selected);
-        }
-
-        public IActionResult ManageBook()
-        {
-            return View();
-        }
-
-        public IActionResult ManageBooks(string myBook)
-        {
-            LibraryDBContext db = new LibraryDBContext();
-            Book viewBook = new Book();
-
-            foreach(Book book in db.Book)
-            {
-                if (book.Title == myBook)
-                {
-                    viewBook = book;
-                }
-            }
-
-            return View("ManageBook", viewBook);
-        }
-
-        public IActionResult Update()
-        {
-            return View("Update");
-        }
-
-        public IActionResult addBook(string Title, string Author, string Genre, int Available, string Type)
-        {
-            LibraryDBContext db = new LibraryDBContext();
-            Book newBook = new Book();
-
-            newBook.Title = Title;
-            newBook.Author = Author;
-            newBook.Genre = Genre;
-            newBook.Available = Available;
-            newBook.Checkedout = 0;
-            newBook.Type = Type;
-
-            db.Book.Add(newBook);
-            db.SaveChanges();
-
-            return View("Manage");
-        }
-
-        [Authorize]
-        public IActionResult Manage()
-        {
-            return View();
-        }
-
-        [Authorize]
-        public IActionResult Search()
-        {
-            return View();
-        }
-
-        public IActionResult SearchLibrary(string search)
-        {
-            List<Book> searchList = new List<Book>();
-            LibraryDBContext db = new LibraryDBContext();
-            foreach (Book book in db.Book)
-            {
-                if (book.Title.ToLower().Contains(search) | book.Author.ToLower().Contains(search.Trim().ToLower()))
-                {
-                    searchList.Add(book);
-                }
-            }
-
-            return View("Search", searchList);
-        }
+        // User Functions
 
         public IActionResult CheckOut(string book)
         {
@@ -187,7 +243,7 @@ namespace LibraryRedux.Controllers
                 }
             }
 
-            AspNetUsers currentUser = FindUser();
+            AspNetUsers currentUser = FindCurrentUser();
 
             DateTime DueDate = DateTime.Now;
             DueDate = DueDate.AddDays(14);
@@ -211,7 +267,7 @@ namespace LibraryRedux.Controllers
         {
             LibraryDBContext db = new LibraryDBContext();
 
-            AspNetUsers currentUser = FindUser();
+            AspNetUsers currentUser = FindCurrentUser();
 
             List<Transaction> checkedOut = new List<Transaction>();
 
@@ -246,7 +302,7 @@ namespace LibraryRedux.Controllers
                 }
             }
 
-            AspNetUsers currentUser = FindUser();
+            AspNetUsers currentUser = FindCurrentUser();
 
             foreach (Transaction check in db.Transaction)
             {
@@ -291,32 +347,10 @@ namespace LibraryRedux.Controllers
             }
         }
 
+        // Methods from creation of application
         public IActionResult Privacy()
         {
             return View();
-        }
-
-        public List<Book> UpdateLibrary(List<Book> library)
-        {
-            LibraryDBContext db = new LibraryDBContext();
-            library = db.Book.ToList<Book>();
-            return library;
-        }
-
-        public AspNetUsers FindUser()
-        {
-            LibraryDBContext db = new LibraryDBContext();
-            AspNetUsers currentUser = new AspNetUsers();
-
-            foreach (AspNetUsers user in db.AspNetUsers)
-            {
-                if (User.Identity.Name == user.Email)
-                {
-                    currentUser = user;
-                }
-            }
-
-            return currentUser;
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

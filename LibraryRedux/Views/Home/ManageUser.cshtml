@@ -34,7 +34,7 @@
             <tr>
                 <td>@Model.UserName</td>
                 <td>@Model.Email</td>
-                <td><button type="button">Suspend</button></td>
+                <td><button type="button" onclick="location.href='@Url.Action("deleteUser", "Home")'">Delete User</button></td>
             </tr>
 
         </table>
@@ -42,7 +42,6 @@
 </p>
 
 <a class="badge" style="font-size: 18px" asp-action="Admin" asp-controller="Home">Return to Admin Page</a>
-
 
 
 

@@ -9,19 +9,19 @@
 <form asp-action="addBook" asp-controller="Home">
     <table align="center">
         <tr>
-            <td>Title: <input type="text" name="title"/></td>
+            <td>Title: <input type="text" name="title" pattern="[0-9a-zA-Z!!#$?]"/></td>
         </tr>
         <tr>
-            <td>Author: <input type="text" name="author"/></td>
+            <td>Author: <input type="text" name="author" pattern="[A-Za-z.,!?]"/></td>
         </tr>
         <tr>
-            <td>Genre: <input type="text" name="genre"/></td>
+            <td>Genre: <input type="text" name="genre" pattern="[A-Za-z.,!?]"/></td>
         </tr>
         <tr>
-            <td>Number of Books: <input type="text" name="available"/></td>
+            <td>Number of Books: <input type="text" name="available" pattern="[0-9]{1}"/></td>
         </tr>
         <tr>
-            <td>Media Type: <input type="text" name="type"/></td>
+            <td>Media Type: <input type="text" name="type" pattern="[A-Za-z]"/></td>
         </tr>
     </table>
     <button type="submit">Add New Book</button>

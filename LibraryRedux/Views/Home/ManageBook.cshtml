@@ -13,7 +13,7 @@
 <div class="text-center">
     <h2>View Current Library</h2>
     <form asp-action="ManageBooks" asp-controller="Home">
-        <select value="book">
+        <select value="currentBook" name="currentBook">
             <option value=""></option>
             @foreach (Book book in libraryList)
             {
@@ -39,7 +39,7 @@
             <tr>
                 <td>@Model.Title</td>
                 <td>@Model.Author</td>
-                <td><button type="button">Manage</button></td>
+                <td><button type="button" onclick="location.href='@Url.Action("SelectManageBook", "Home", new { currentBook = Model.Title })'">Manage</button></td>
             </tr>
 
         </table>
