@@ -25,26 +25,26 @@
     <form asp-action="Update" asp-controller="Home">
         <button type="submit">Add New Book</button>
     </form>
+
+
+    <p id="book">
+        @if (Model != null)
+        {
+            <table align="center" style="text-align: center">
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Action</th>
+                </tr>
+                <tr>
+                    <td>@Model.Title</td>
+                    <td>@Model.Author</td>
+                    <td><button type="button" onclick="location.href='@Url.Action("SelectManageBook", "Home", new { currentBook = Model.Title })'">Manage</button></td>
+                </tr>
+
+            </table>
+        }
+    </p>
+
+    <a class="badge" style="font-size: 18px" asp-action="Admin" asp-controller="Home">Return to Admin Page</a>
 </div>
-
-<p id="book">
-    @if (Model != null)
-    {
-        <table align="center" style="text-align: center">
-            <tr>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Action</th>
-            </tr>
-            <tr>
-                <td>@Model.Title</td>
-                <td>@Model.Author</td>
-                <td><button type="button" onclick="location.href='@Url.Action("SelectManageBook", "Home", new { currentBook = Model.Title })'">Manage</button></td>
-            </tr>
-
-        </table>
-    }
-</p>
-
-
-<a class="badge" style="font-size: 18px" asp-action="Admin" asp-controller="Home">Return to Admin Page</a>

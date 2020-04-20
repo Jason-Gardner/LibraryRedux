@@ -7,20 +7,24 @@
 @model Book
 
 <h1>UpdateBook</h1>
-<form asp-action="Update" asp-controller="Home">
+<form asp-action="UpdateBook" asp-controller="Home">
     <table>
         <tr>
-            <td>Title: <input type="text" value="@Model.Title" /></td>
+            <td>Title: <input type="text" value="@Model.Id" name="id" readonly /></td>
         </tr>
         <tr>
-            <td>Author: <input type="text" value="@Model.Author" /></td>
+            <td>Title: <input type="text" value="@Model.Title" name="title" /></td>
         </tr>
         <tr>
-            <td>Number Available: <input type="text" value="@Model.Available" /></td>
+            <td>Author: <input type="text" value="@Model.Author" name="author" /></td>
         </tr>
         <tr>
-            <td>Media Type: <input type="text" value="@Model.Type" /></td>
+            <td>Number Available: <input type="text" value="@Model.Available" name="avail" /></td>
+        </tr>
+        <tr>
+            <td>Media Type: <input type="text" value="@Model.Genre" name="genre" /></td>
         </tr>
     </table>
+    <button type="submit">Update</button>
 </form>
 

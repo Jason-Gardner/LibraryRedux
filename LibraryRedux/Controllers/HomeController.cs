@@ -123,6 +123,30 @@ namespace LibraryRedux.Controllers
             return View("Manage");
         }
 
+        public IActionResult UpdateBook(int id, string title, string author, int avail, string genre)
+        {
+            LibraryDBContext db = new LibraryDBContext();
+            Book tbook = new Book();
+
+            foreach(Book book in db.Book)
+            {
+                if (id == book.Id)
+                {
+                    tbook = book;
+                }
+            }
+
+            tbook.Title = title;
+            tbook.Author = author;
+            tbook.Available = avail;
+            tbook.Genre = genre;
+
+            db.Book.Update(tbook);
+            db.SaveChanges();
+
+            return View("ManageBook");
+        }
+
         [Authorize]
         public IActionResult Manage()
         {
