@@ -6,23 +6,27 @@
 
 @model Book
 
-<h1>UpdateBook</h1>
+<h1>Update Book - <i>@Model.Title</i></h1>
 <form asp-action="UpdateBook" asp-controller="Home">
-    <table>
+    <table cellpadding="2">
         <tr>
-            <td>Title: <input type="text" value="@Model.Id" name="id" readonly /></td>
+            <td>Book ID: </td><td><input type="text" value="@Model.Id" name="id" readonly /></td>
         </tr>
         <tr>
-            <td>Title: <input type="text" value="@Model.Title" name="title" /></td>
+            <td>Title: </td>
+            <td><input type="text" value="@Model.Title" name="title"/></td>
         </tr>
         <tr>
-            <td>Author: <input type="text" value="@Model.Author" name="author" /></td>
+            <td>Author: </td>
+            <td><input type="text" value="@Model.Author" name="author"/></td>
         </tr>
         <tr>
-            <td>Number Available: <input type="text" value="@Model.Available" name="avail" /></td>
+            <td>Number Available: </td>
+            <td><input type="text" value="@Model.Available" name="avail"/></td>
         </tr>
         <tr>
-            <td>Media Type: <input type="text" value="@Model.Genre" name="genre" /></td>
+            <td>Media Type: </td>
+            <td><input type="text" value="@Model.Genre" name="genre" /></td>
         </tr>
     </table>
     <button type="submit">Update</button>
