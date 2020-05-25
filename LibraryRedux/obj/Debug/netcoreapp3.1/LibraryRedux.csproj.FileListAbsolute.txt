@@ -167,8 +167,7 @@ C:\Users\Jason Gardner\source\repos\LibraryRedux\LibraryRedux\obj\Debug\netcorea
 C:\Users\Jason Gardner\source\repos\LibraryRedux\LibraryRedux\obj\Debug\netcoreapp3.1\Razor\Views\Home\Search.cshtml.g.cs
 C:\Users\Jason Gardner\source\repos\LibraryRedux\LibraryRedux\obj\Debug\netcoreapp3.1\Razor\Views\Home\CheckOut.cshtml.g.cs
 C:\Users\Jason Gardner\source\repos\LibraryRedux\LibraryRedux\obj\Debug\netcoreapp3.1\Razor\Views\Home\Browse.cshtml.g.cs
-C:\Users\Jason Gardner\source\repos\LibraryRedux\LibraryRedux\obj\Debug\netcoreapp3.1\Razor\Views\Home\Update.cshtml.g.cs
 C:\Users\Jason Gardner\source\repos\LibraryRedux\LibraryRedux\obj\Debug\netcoreapp3.1\Razor\Views\Home\Admin.cshtml.g.cs
 C:\Users\Jason Gardner\source\repos\LibraryRedux\LibraryRedux\obj\Debug\netcoreapp3.1\Razor\Views\Home\ManageUser.cshtml.g.cs
 C:\Users\Jason Gardner\source\repos\LibraryRedux\LibraryRedux\obj\Debug\netcoreapp3.1\Razor\Views\Home\ManageBook.cshtml.g.cs
-C:\Users\Jason Gardner\source\repos\LibraryRedux\LibraryRedux\obj\Debug\netcoreapp3.1\Razor\Views\Home\SelectManageBook.cshtml.g.cs
+C:\Users\Jason Gardner\source\repos\LibraryRedux\LibraryRedux\obj\Debug\netcoreapp3.1\Razor\Views\Home\AddBook.cshtml.g.cs

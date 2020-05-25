@@ -48,7 +48,7 @@ namespace LibraryRedux.Controllers
             LibraryDBContext db = new LibraryDBContext();
             foreach (Book book in db.Book)
             {
-                if (book.Title.ToLower().Contains(search) | book.Author.ToLower().Contains(search.Trim().ToLower()))
+                if (book.Title.ToLower().Contains(search.Trim().ToLower()) | book.Author.ToLower().Contains(search.Trim().ToLower()))
                 {
                     searchList.Add(book);
                 }
@@ -75,9 +75,9 @@ namespace LibraryRedux.Controllers
             return View();
         }
 
-        public IActionResult Update()
+        public IActionResult AddBook()
         {
-            return View("Update");
+            return View("AddBook");
         }
 
         public IActionResult ManageUsers(string user)
@@ -100,22 +100,18 @@ namespace LibraryRedux.Controllers
             return View("ManageBook", FindBook(currentBook));
         }
 
-        public IActionResult SelectManageBook(string currentBook)
-        {
-            return View("SelectManageBook", FindBook(currentBook));
-        }
-
         public IActionResult addBook(string Title, string Author, string Genre, int Available, string Type)
         {
             LibraryDBContext db = new LibraryDBContext();
-            Book newBook = new Book();
-
-            newBook.Title = Title;
-            newBook.Author = Author;
-            newBook.Genre = Genre;
-            newBook.Available = Available;
-            newBook.Checkedout = 0;
-            newBook.Type = Type;
+            Book newBook = new Book()
+            {
+                Title = Title,
+                Author = Author,
+                Genre = Genre,
+                Available = Available,
+                Checkedout = 0,
+                Type = Type
+            };
 
             db.Book.Add(newBook);
             db.SaveChanges();
@@ -128,7 +124,7 @@ namespace LibraryRedux.Controllers
             LibraryDBContext db = new LibraryDBContext();
             Book tbook = new Book();
 
-            foreach(Book book in db.Book)
+            foreach (Book book in db.Book)
             {
                 if (id == book.Id)
                 {
@@ -217,38 +213,27 @@ namespace LibraryRedux.Controllers
         [Authorize]
         public IActionResult Menu(string menu)
         {
-            if (menu == null)
+            switch (menu)
             {
-                return View();
-            }
-            if (menu == "manage")
-            {
-                return View("Admin");
-            }
-            if (menu == "search")
-            {
-                return View("Search");
-            }
-            if (menu == "library")
-            {
-                return View("Browse");
-            }
-            else
-            {
-                List<Transaction> checkedOut = UserBook();
-                List<Book> userOut = new List<Book>();
-                LibraryDBContext db = new LibraryDBContext();
+                case null: return View();
+                case "manage": return View("Admin");
+                case "search": return View("Search");
+                case "library": return View("Browse");
+                default:
+                    List<Transaction> checkedOut = UserBook();
+                    List<Book> userOut = new List<Book>();
+                    LibraryDBContext db = new LibraryDBContext();
 
-                if (checkedOut.Count > 0)
-                {
-                    return View("Return", checkedOut);
-                }
-                else
-                {
-                    return View("Return");
-                }
+                    if (checkedOut.Count > 0)
+                    {
+                        return View("Return", checkedOut);
+                    }
+                    else
+                    {
+                        return View("Return");
+                    }
             }
-        }        
+        }
 
         // User Functions
 

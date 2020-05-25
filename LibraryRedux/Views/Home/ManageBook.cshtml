@@ -7,44 +7,56 @@
 }
 
 @model Book
+    <div class="text-center">
+        <h2>View Current Library</h2>
+        <form asp-action="ManageBooks" asp-controller="Home">
+            <select value="currentBook" name="currentBook">
+                <option value=""></option>
+                @foreach (Book book in libraryList)
+                {
+                    <option value="@book.Title">@book.Title</option>
+                }
+            </select>
+            <button type="submit">Manage Book Entry</button>
+        </form>
 
-<h1>ManageBook</h1>
-
-<div class="text-center">
-    <h2>View Current Library</h2>
-    <form asp-action="ManageBooks" asp-controller="Home">
-        <select value="currentBook" name="currentBook">
-            <option value=""></option>
-            @foreach (Book book in libraryList)
+        <div id="book" style="padding-top: 10px">
+            @if (Model != null)
             {
-                <option value="@book.Title">@book.Title</option>
+                <hr style="width: 25%" />
+                <h4 style="text-align:center">Update @Model.Title</h4>
+                <form asp-action="UpdateBook" asp-controller="Home">
+                    <table cellpadding="2" style="padding-bottom: 10px" align="center">
+                        <tr>
+                            <td>Book ID: </td>
+                            <td><input type="text" value="@Model.Id" name="id" readonly /></td>
+                        </tr>
+                        <tr>
+                            <td>Title: </td>
+                            <td><input type="text" value="@Model.Title" name="title" /></td>
+                        </tr>
+                        <tr>
+                            <td>Author: </td>
+                            <td><input type="text" value="@Model.Author" name="author" /></td>
+                        </tr>
+                        <tr>
+                            <td>Number Available: </td>
+                            <td><input type="text" value="@Model.Available" name="avail" /></td>
+                        </tr>
+                        <tr>
+                            <td>Media Type: </td>
+                            <td><input type="text" value="@Model.Genre" name="genre" /></td>
+                        </tr>
+                    </table><br />
+                    <button type="submit">Update</button>
+                </form>
             }
-        </select>
-        <button type="submit">Manage Book Entry</button>
-    </form>
-    <form asp-action="Update" asp-controller="Home">
-        <button type="submit">Add New Book</button>
-    </form>
+        </div>
 
-
-    <p id="book">
-        @if (Model != null)
-        {
-            <table align="center" style="text-align: center">
-                <tr>
-                    <th>Title</th>
-                    <th>Author</th>
-                    <th>Action</th>
-                </tr>
-                <tr>
-                    <td>@Model.Title</td>
-                    <td>@Model.Author</td>
-                    <td><button type="button" onclick="location.href='@Url.Action("SelectManageBook", "Home", new { currentBook = Model.Title })'">Manage</button></td>
-                </tr>
-
-            </table>
-        }
-    </p>
-
-    <a class="badge" style="font-size: 18px" asp-action="Admin" asp-controller="Home">Return to Admin Page</a>
-</div>
+        <hr style="width: 25%"/>
+        <form asp-action="Update" asp-controller="Home">
+            <button type="submit">Add New Book</button>
+        </form>
+        <br />
+        <a class="badge" style="font-size: 18px" asp-action="Admin" asp-controller="Home">Return to Admin Page</a>
+    </div>
